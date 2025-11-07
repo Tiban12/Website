@@ -1,0 +1,745 @@
+/* ============================================
+   ROOT VARIABLES & COLOR SCHEME
+   ============================================
+   Defines the main color palette used throughout the website.
+   By using CSS variables (custom properties), we can easily
+   change colors globally without editing individual selectors.
+*/
+:root {
+  --primary-color: #ff6b35; /* Main orange/red color for accents and gradients */
+  --secondary-color: #004e89; /* Deep blue for secondary accents */
+  --accent-color: #f7931e; /* Gold/yellow accent for highlights */
+  --dark-bg: #0f0f0f; /* Dark background color (almost black) */
+  --light-text: #ffffff; /* White text for main content */
+  --muted-text: #b0b0b0; /* Gray text for secondary content */
+  --border-color: rgba(255, 107, 53, 0.2); /* Semi-transparent orange for borders */
+}
+
+/* ============================================
+   GLOBAL RESET & BASE STYLES
+   ============================================
+   Removes default browser margins/padding and sets
+   fundamental styles that apply to all elements.
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensures padding/borders are included in element width/height */
+}
+
+html {
+  scroll-behavior: smooth; /* Makes scrolling animate smoothly instead of jumping */
+  scroll-snap-type: y mandatory; /* Enables scroll-snapping for full-page sections */
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--dark-bg);
+  color: var(--light-text);
+  overflow-x: hidden; /* Prevents horizontal scrollbar from appearing */
+  line-height: 1.6; /* Adds vertical spacing between lines for readability */
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================
+   Reusable keyframe animations that create smooth,
+   engaging visual transitions throughout the site.
+*/
+
+/* Slides the navbar down from above when page loads */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Fades content in and slides it up from bottom */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Simple fade-in animation without movement */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scales element from small to normal size while fading in */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slides content in from the right side */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   NAVIGATION BAR
+   ============================================
+   Fixed header that stays at top of page with
+   navigation links. Uses blur effect for glass-morphism style.
+*/
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(15, 15, 15, 0.95); /* Semi-transparent dark background */
+  backdrop-filter: blur(10px); /* Glass-morphism effect */
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000; /* Ensures navbar stays above other content */
+  animation: slideDown 0.5s ease-out;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  display: flex; /* Uses flexbox for horizontal layout */
+  justify-content: space-between; /* Logo on left, menu on right */
+  align-items: center; /* Vertically centers all items */
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text; /* Makes gradient fill the text */
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none; /* Removes default bullet points */
+  gap: 2rem; /* Space between navigation items */
+}
+
+.nav-link {
+  color: var(--muted-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  position: relative; /* Needed for ::after pseudo-element positioning */
+  transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+/* Creates animated underline effect */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0; /* Starts at 0 width */
+  height: 2px;
+  background: var(--primary-color);
+  transition: width 0.3s ease; /* Animates width on hover */
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color); /* Changes text color on hover/active */
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%; /* Expands underline to full width */
+}
+
+/* ============================================
+   SECTION STYLES
+   ============================================
+   Base styles for all full-viewport sections.
+   Each section takes up entire screen height
+   and snaps when scrolling.
+*/
+.section {
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  align-items: center; /* Centers content vertically */
+  justify-content: center; /* Centers content horizontally */
+  padding: 6rem 2rem 2rem;
+  animation: fadeInUp 0.8s ease-out;
+  scroll-snap-align: start; /* Snaps to start of section */
+  scroll-snap-stop: always; /* Forces stop at each section */
+}
+
+/* ============================================
+   HOME SECTION (Hero/Intro)
+   ============================================
+   Landing section with profile picture and intro text.
+   Uses gradient background and two-column layout.
+*/
+.home-section {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 1) 0%, rgba(15, 25, 40, 0.5) 100%);
+}
+
+.home-content {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns for image and text */
+  gap: 4rem; /* Space between columns */
+  align-items: center;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  animation: scaleIn 0.8s ease-out;
+}
+
+/* Circular profile picture with gradient border */
+.profile-circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%; /* Creates perfect circle */
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  padding: 8px; /* Space between gradient border and image */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden; /* Clips content to circular shape */
+  box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
+  animation: float 3s ease-in-out infinite; /* Continuous floating motion */
+}
+
+/* Floating up and down animation for profile */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px); /* Moves 20px up at midpoint */
+  }
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover; /* Crops image to fill circle */
+  display: block;
+}
+
+.intro-container {
+  animation: slideInRight 0.8s ease-out;
+}
+
+/* Main intro title with large font */
+.intro-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 1.2; /* Reduces space between lines */
+}
+
+/* Gradient text styling for accent words */
+.accent-text {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.intro-subtitle {
+  font-size: 1.5rem;
+  color: var(--muted-text);
+  margin-bottom: 1.5rem;
+}
+
+.intro-description {
+  font-size: 1.1rem;
+  color: var(--muted-text);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+/* Social media icons container */
+.social-icons {
+  display: flex;
+  gap: 1rem; /* Space between icons */
+  margin-bottom: 2rem;
+}
+
+/* Circular social media icon buttons */
+.social-icon {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--border-color);
+  border-radius: 50%; /* Creates circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.social-icon:hover {
+  background-color: var(--primary-color);
+  color: var(--dark-bg);
+  transform: translateY(-5px); /* Lifts icon up on hover */
+}
+
+/* Main call-to-action button */
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--dark-bg);
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  border: none;
+  border-radius: 50px; /* Rounded pill shape */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+  text-decoration: none;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px); /* Lifts button on hover */
+  box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5); /* Stronger shadow on hover */
+}
+
+/* ============================================
+   SECTION TITLES
+   ============================================
+   Large gradient titles used in hobbies and about sections.
+*/
+.section-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  width: 100%;
+}
+
+/* ============================================
+   HOBBIES SECTION
+   ============================================
+   Displays hobby cards in a grid layout.
+*/
+.hobbies-section {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 1) 0%, rgba(78, 15, 40, 0.1) 100%);
+  flex-direction: column; /* Stacks content vertically */
+}
+
+/* ============================================
+   ABOUT SECTION
+   ============================================
+   Text-based section with centered content.
+*/
+.about-section {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 1) 0%, rgba(0, 78, 137, 0.1) 100%);
+  flex-direction: column;
+}
+
+.about-content {
+  max-width: 800px;
+  text-align: center;
+}
+
+.about-content p {
+  font-size: 1.1rem;
+  color: var(--muted-text);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.highlight {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* ============================================
+   HOBBY CARDS
+   ============================================
+   Grid of cards displaying hobbies with hover effects.
+*/
+.cards-container {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Individual hobby card */
+.card {
+  background: rgba(255, 255, 255, 0.05); /* Slightly transparent background */
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease; /* Smooth transitions for all properties */
+  animation: cardFadeIn 0.6s ease-out forwards;
+  position: relative;
+  overflow: hidden; /* Clips the shimmer effect */
+}
+
+/* Card fade-in animation on page load */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shimmer effect that runs across card on hover */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%; /* Starts outside card on left */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.card:hover::before {
+  left: 100%; /* Moves to right side on hover */
+}
+
+.card:hover {
+  background: rgba(255, 107, 53, 0.1); /* Adds tint on hover */
+  border-color: var(--primary-color);
+  transform: translateY(-10px); /* Lifts card up */
+  box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+}
+
+.card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* List of hobby items within card */
+.hobby-items {
+  list-style: none;
+  margin: 1.5rem 0;
+}
+
+.hobby-items li {
+  padding: 0.5rem 0;
+  color: var(--muted-text);
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 1.5rem; /* Space for arrow icon */
+}
+
+/* Arrow that appears on hover */
+.hobby-items li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--primary-color);
+  opacity: 0; /* Hidden by default */
+  transition: all 0.2s ease;
+}
+
+.card:hover .hobby-items li::before {
+  opacity: 1; /* Shows on card hover */
+  left: 5px; /* Slight movement */
+}
+
+.card:hover .hobby-items li {
+  color: var(--light-text); /* Brightens text on hover */
+}
+
+.card p {
+  color: var(--muted-text);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   FOOTER
+   ============================================
+   Page footer with copyright information.
+*/
+.footer {
+  background: rgba(15, 15, 15, 0.8);
+  border-top: 1px solid var(--border-color);
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted-text);
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   HOBBY SHOWCASE SECTION
+   ============================================
+   Alternating layout for hobby details page.
+   Each hobby takes full viewport with background image
+   and fade gradient from right to left.
+*/
+.hobby-showcase-section {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 1) 0%, rgba(15, 25, 40, 0.5) 100%);
+}
+
+/* Full-screen hobby display container with background image */
+.hobby-showcase {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Changed to flex-start to position content on left */
+  padding: 6rem 25rem;
+  gap: 4rem;
+  max-width: 2000px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background-size: cover; /* Image covers entire section */
+  background-position: center right; /* Position image on right side */
+  background-attachment: fixed; /* Creates parallax effect */
+  position: relative;
+}
+
+/* NEW: Overlay gradient that fades from left (transparent) to right (dark) */
+.hobby-showcase::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(15, 15, 15, 0.95) 0%, rgba(15, 15, 15, 0.7) 40%, rgba(15, 15, 15, 0) 100%);
+  pointer-events: none; /* Doesn't interfere with button clicks */
+  z-index: 1; /* Sits on top of background image */
+}
+
+/* Removes the old alternating direction since we now use background images */
+.hobby-showcase:nth-child(even) {
+  flex-direction: row; /* Same as odd for consistency */
+}
+
+.showcase-content {
+  flex: 1;
+  max-width: 550px;
+  animation: slideInLeft 0.8s ease-out;
+  position: relative;
+  z-index: 2; /* Sits above the gradient overlay */
+}
+
+.showcase-content:nth-child(even) {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.hobby-showcase:nth-child(even) .showcase-content {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+/* Category label above title */
+.showcase-category {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 3px; /* Increases spacing between letters */
+  text-transform: uppercase; /* Makes text all caps */
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
+  animation: fadeIn 0.6s ease-out 0.2s both; /* Delays animation start */
+}
+
+/* Large hobby title */
+.showcase-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--light-text);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  animation: fadeIn 0.6s ease-out 0.3s both;
+}
+
+.showcase-description {
+  font-size: 1.1rem;
+  color: var(--muted-text);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.6s ease-out 0.4s both;
+}
+
+/* Container for action buttons */
+.showcase-actions {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* Wraps buttons to next line if needed */
+  animation: fadeIn 0.6s ease-out 0.5s both;
+}
+
+/* Action button styling */
+.action-button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Primary button (filled) */
+.action-button.primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: var(--dark-bg);
+  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+}
+
+.action-button.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+}
+
+/* Secondary button (outline) */
+.action-button.secondary {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.action-button.secondary:hover {
+  background: var(--primary-color);
+  color: var(--dark-bg);
+  transform: translateY(-3px);
+}
+
+/* Remove/hide the old image display area since we use background images now */
+.showcase-image {
+  display: none; /* Hidden - not needed with background images */
+}
+
+.image-frame {
+  display: none; /* Hidden - not needed with background images */
+}
+
+/* ============================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ============================================
+   Adjusts layout and sizing for screens 768px and below.
+*/
+@media (max-width: 768px) {
+  /* Single column layout for home content */
+  .home-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-top: 8rem;
+  }
+
+  .profile-circle {
+    width: 200px;
+    height: 200px;
+  }
+
+  .intro-title {
+    font-size: 2rem;
+  }
+
+  .intro-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .nav-menu {
+    gap: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  /* Single column card grid */
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 4rem 1rem 1rem;
+  }
+
+  /* Stack showcase sections vertically and adjust background on mobile */
+  .hobby-showcase {
+    flex-direction: column !important;
+    gap: 2rem;
+    padding: 4rem 1.5rem;
+    background-attachment: scroll; /* Disable parallax on mobile */
+  }
+
+  .hobby-showcase:nth-child(even) {
+    flex-direction: column;
+  }
+
+  .showcase-title {
+    font-size: 2.5rem;
+  }
+
+  .showcase-description {
+    font-size: 1rem;
+  }
+
+  .showcase-image {
+    width: 100%;
+  }
+
+  .image-frame {
+    max-width: 100%;
+  }
+
+  /* Stack buttons vertically */
+  .showcase-actions {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+    text-align: center;
+  }
+}
